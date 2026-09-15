@@ -244,7 +244,7 @@ const ProductDetail: React.FC = () => {
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <svg
-                    className="w-5 h-5 text-verde-600 mt-0.5 flex-shrink-0"
+                    className="w-5 h-5 text-verde-600 mt-0.5 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -260,7 +260,7 @@ const ProductDetail: React.FC = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="w-5 h-5 text-verde-600 mt-0.5 flex-shrink-0"
+                    className="w-5 h-5 text-verde-600 mt-0.5 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -276,7 +276,7 @@ const ProductDetail: React.FC = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="w-5 h-5 text-verde-600 mt-0.5 flex-shrink-0"
+                    className="w-5 h-5 text-verde-600 mt-0.5 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
