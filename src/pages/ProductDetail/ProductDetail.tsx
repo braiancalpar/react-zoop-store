@@ -15,9 +15,8 @@ import Badge from '../../components/common/Badge';
 import ImageGallery from '../../components/product/ImageGallery';
 import ProductPrice from '../../components/product/ProductPrice';
 import QuantitySelector from '../../components/common/QuantitySelector';
-import { productsService } from '../../services/productsService';
 import { useCart } from '../../contexts/CartContext';
-import type { Product } from '../../types/Product';
+import { useProduct } from '../../hooks/useProduct';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,38 +24,8 @@ const ProductDetail: React.FC = () => {
   const { addToCart } = useCart();
 
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { product, loading, error } = useProduct(id);
   const [addedToCart, setAddedToCart] = useState(false);
-
-  // Fetch product data on mount
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const productId = Number(id);
-        if (isNaN(productId)) {
-          setError('ID do produto inválido');
-          setLoading(false);
-          return;
-        }
-        const data = await productsService.getProductById(productId);
-        setProduct(data);
-      } catch (err) {
-        console.error('Erro ao buscar produto:', err);
-        setError('Produto não encontrado');
-        setProduct(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchProduct();
-    }
-  }, [id]);
 
   // Reset addedToCart message after 3 seconds
   useEffect(() => {

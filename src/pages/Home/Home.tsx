@@ -4,7 +4,7 @@
  * Página inicial com categorias, mais vendidos, ofertas e depoimentos.
  */
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
@@ -17,6 +17,7 @@ import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
 import { useCart } from '../../contexts/CartContext';
 import type { Product, Category } from '../../types/Product';
+import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
 
 interface Testimonial {
   rating: number;
@@ -28,9 +29,7 @@ interface Testimonial {
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const categoriesScrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollCategoriesLeft, setCanScrollCategoriesLeft] = useState(false);
-  const [canScrollCategoriesRight, setCanScrollCategoriesRight] = useState(false);
+  const useScroll = useHorizontalScroll({ scrollAmount: 400 });
 
   // API State
   const [categories, setCategories] = useState<Category[]>([]);
@@ -129,35 +128,6 @@ const Home: React.FC = () => {
     [navigate]
   );
 
-  // Categories carousel scroll
-  const updateCategoriesScrollButtons = useCallback(() => {
-    if (!categoriesScrollRef.current) return;
-
-    const { scrollLeft, scrollWidth, clientWidth } = categoriesScrollRef.current;
-    setCanScrollCategoriesLeft(scrollLeft > 0);
-    setCanScrollCategoriesRight(scrollLeft < scrollWidth - clientWidth - 10);
-  }, []);
-
-  useEffect(() => {
-    updateCategoriesScrollButtons();
-    window.addEventListener('resize', updateCategoriesScrollButtons);
-    return () => window.removeEventListener('resize', updateCategoriesScrollButtons);
-  }, [categories, updateCategoriesScrollButtons]);
-
-  const scrollCategories = (direction: 'left' | 'right') => {
-    if (!categoriesScrollRef.current) return;
-
-    const scrollAmount = 400;
-    const newScrollLeft =
-      categoriesScrollRef.current.scrollLeft +
-      (direction === 'left' ? -scrollAmount : scrollAmount);
-
-    categoriesScrollRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <div className="min-h-screen">
       {/* 1. Categories Section */}
@@ -174,9 +144,9 @@ const Home: React.FC = () => {
           ) : (
             <div className="relative px-12">
               {/* Left Navigation Button */}
-              {canScrollCategoriesLeft && (
+              {useScroll.canScrollLeft && (
                 <button
-                  onClick={() => scrollCategories('left')}
+                  onClick={() => useScroll.scroll('left')}
                   className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center hover:bg-magenta-50 hover:shadow-2xl transition-all border border-cinza-200"
                   aria-label="Scroll left"
                 >
@@ -198,8 +168,8 @@ const Home: React.FC = () => {
 
               {/* Scrollable Container */}
               <div
-                ref={categoriesScrollRef}
-                onScroll={updateCategoriesScrollButtons}
+                ref={useScroll.scrollRef}
+                onScroll={() => useScroll.updateScrollButtons()}
                 className="overflow-x-auto scrollbar-hide"
               >
                 <div className="flex gap-4 pb-4 px-4">
@@ -214,9 +184,9 @@ const Home: React.FC = () => {
               </div>
 
               {/* Right Navigation Button */}
-              {canScrollCategoriesRight && (
+              {useScroll.canScrollRight && (
                 <button
-                  onClick={() => scrollCategories('right')}
+                  onClick={() => useScroll.scroll('right')}
                   className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center hover:bg-magenta-50 hover:shadow-2xl transition-all border border-cinza-200"
                   aria-label="Scroll right"
                 >

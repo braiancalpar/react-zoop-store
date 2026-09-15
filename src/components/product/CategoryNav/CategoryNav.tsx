@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 /**
  * CategoryNav Component
  *
@@ -13,8 +14,9 @@
  * ```
  */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import { formatCategoryName } from '../../../utils/formatters';
+import { useHorizontalScroll } from '../../../hooks/useHorizontalScroll';
 
 export interface Category {
   id: number;
@@ -35,46 +37,14 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   onCategoryClick,
   className = '',
 }) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  // Check scroll position
-  const updateScrollButtons = () => {
-    if (!scrollContainerRef.current) return;
-
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-  };
-
-  // Update on mount and when categories change
-  useEffect(() => {
-    updateScrollButtons();
-    window.addEventListener('resize', updateScrollButtons);
-    return () => window.removeEventListener('resize', updateScrollButtons);
-  }, [categories]);
-
-  // Scroll handler
-  const scroll = (direction: 'left' | 'right') => {
-    if (!scrollContainerRef.current) return;
-
-    const scrollAmount = 300;
-    const newScrollLeft =
-      scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-
-    scrollContainerRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth',
-    });
-  };
+  const useScroll = useHorizontalScroll();
 
   return (
     <nav className={`relative ${className}`}>
       {/* Left Navigation Button */}
-      {canScrollLeft && (
+      {useScroll.canScrollLeft && (
         <button
-          onClick={() => scroll('left')}
+          onClick={() => useScroll.scroll('left')}
           className="absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-magenta-50 transition-all border border-cinza-200"
           aria-label="Scroll left"
         >
@@ -96,8 +66,8 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
 
       {/* Scrollable Container */}
       <div
-        ref={scrollContainerRef}
-        onScroll={updateScrollButtons}
+        ref={useScroll.scrollRef}
+        onScroll={() => useScroll.updateScrollButtons()}
         className="overflow-x-auto scrollbar-hide px-8"
       >
         <div className="flex gap-2 pb-2">
@@ -131,9 +101,9 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
       </div>
 
       {/* Right Navigation Button */}
-      {canScrollRight && (
+      {useScroll.canScrollRight && (
         <button
-          onClick={() => scroll('right')}
+          onClick={() => useScroll.scroll('right')}
           className="absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-magenta-50 transition-all border border-cinza-200"
           aria-label="Scroll right"
         >
