@@ -1,0 +1,19 @@
+# Dependências
+node_modules
+dist
+build
+
+# Arquivos gerados
+*.min.js
+*.min.css
+
+# Arquivos de configuração
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Outros
+.env
+.env.local
+coverage
+*.log

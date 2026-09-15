@@ -1,0 +1,194 @@
+@import 'tailwindcss';
+
+/* Montserrat Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+/* Tailwind v4 Theme - Custom Colors */
+@theme {
+  --color-magenta-50: #fef1f9;
+  --color-magenta-100: #fde5f4;
+  --color-magenta-200: #fbcceb;
+  --color-magenta-300: #f9a3dc;
+  --color-magenta-400: #f56cc4;
+  --color-magenta-500: #eb3fa7;
+  --color-magenta-600: #d91e87;
+  --color-magenta-700: #ba156b;
+  --color-magenta-800: #991658;
+  --color-magenta-900: #7f194b;
+  --color-magenta-950: #4f0829;
+
+  --color-cinza-50: #f8f9fa;
+  --color-cinza-100: #f1f3f5;
+  --color-cinza-200: #e9ecef;
+  --color-cinza-300: #dee2e6;
+  --color-cinza-400: #ced4da;
+  --color-cinza-500: #adb5bd;
+  --color-cinza-600: #868e96;
+  --color-cinza-700: #495057;
+  --color-cinza-800: #343a40;
+  --color-cinza-900: #212529;
+  --color-cinza-950: #0d0f11;
+
+  --color-azul-50: #eff6ff;
+  --color-azul-100: #dbeafe;
+  --color-azul-200: #bfdbfe;
+  --color-azul-300: #93c5fd;
+  --color-azul-400: #60a5fa;
+  --color-azul-500: #3b82f6;
+  --color-azul-600: #2563eb;
+  --color-azul-700: #1d4ed8;
+  --color-azul-800: #1e40af;
+  --color-azul-900: #1e3a8a;
+  --color-azul-950: #172554;
+
+  --color-verde-50: #f0fdf4;
+  --color-verde-100: #dcfce7;
+  --color-verde-200: #bbf7d0;
+  --color-verde-300: #86efac;
+  --color-verde-400: #4ade80;
+  --color-verde-500: #22c55e;
+  --color-verde-600: #16a34a;
+  --color-verde-700: #15803d;
+  --color-verde-800: #166534;
+  --color-verde-900: #14532d;
+  --color-verde-950: #052e16;
+
+  --color-grafite-50: #f6f7f8;
+  --color-grafite-100: #e8eaed;
+  --color-grafite-200: #d4d7dc;
+  --color-grafite-300: #b5bac2;
+  --color-grafite-400: #9098a3;
+  --color-grafite-500: #747d89;
+  --color-grafite-600: #5f6670;
+  --color-grafite-700: #4d535b;
+  --color-grafite-800: #42474d;
+  --color-grafite-900: #3a3e43;
+  --color-grafite-950: #25282c;
+}
+
+/* Custom CSS Variables for dynamic theming */
+@layer base {
+  :root {
+    --color-primary: #eb3fa7;
+    --color-primary-dark: #ba156b;
+    --color-secondary: #3b82f6;
+    --color-accent: #22c55e;
+    --color-neutral: #5f6670;
+
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+  }
+
+  /* Base typography */
+  body {
+    font-family:
+      Montserrat,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
+    color: #3a3e43;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings:
+      'kern' 1,
+      'liga' 1;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #fff,
+      0 0 0 4px #eb3fa7;
+  }
+
+  /* Selection styles */
+  ::selection {
+    background-color: #fce7f6;
+    color: #831843;
+  }
+
+  /* Smooth transitions for interactive elements */
+  a,
+  button {
+    transition: all 300ms ease-in-out;
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  /* Glassmorphism effect */
+  .glass {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-dark {
+    background-color: rgba(37, 40, 44, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background-image: linear-gradient(to right, #eb3fa7, #d6268f);
+  }
+
+  .gradient-secondary {
+    background-image: linear-gradient(to right, #3b82f6, #2563eb);
+  }
+
+  .gradient-accent {
+    background-image: linear-gradient(to right, #22c55e, #16a34a);
+  }
+
+  /* Text gradients */
+  .text-gradient-primary {
+    background-image: linear-gradient(to right, #eb3fa7, #ba156b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    transition:
+      transform 300ms ease-in-out,
+      box-shadow 300ms ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Shimmer loading effect */
+  .shimmer {
+    background-image: linear-gradient(to right, #e9ecef, #f8f9fa, #e9ecef);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
