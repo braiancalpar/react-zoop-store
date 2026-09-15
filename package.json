@@ -13,12 +13,14 @@
     "preview": "vite preview",
     "server": "json-server --watch server/db.json --port 3001",
     "dev:full": "concurrently \"npm run dev\" \"npm run server\" --names \"vite,api\" --prefix-colors \"cyan,magenta\"",
-    "generate:data": "node scripts/generateData.js"
+    "generate:data": "node scripts/generateData.js",
+    "perf": "npm run build && npm run preview"
   },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "react-router-dom": "^7.9.6",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
