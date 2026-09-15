@@ -161,7 +161,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* 1. Categories Section */}
-      <section className="py-12 bg-gradient-to-b from-cinza-50 to-white">
+      <section className="py-12 bg-linear-to-b from-cinza-50 to-white">
         <Container>
           <Typography variant="heading" weight="bold" className="mb-6 text-center">
             Explore por Categoria
@@ -264,7 +264,7 @@ const Home: React.FC = () => {
 
       {/* 3. Deals Section */}
       {topDeals.length > 0 && (
-        <section className="py-16 bg-gradient-to-r from-magenta-50 to-azul-50">
+        <section className="py-16 bg-linear-to-r from-magenta-50 to-azul-50">
           <Container>
             <div className="mb-8">
               <div className="flex items-center justify-between flex-wrap gap-4 mb-2">
