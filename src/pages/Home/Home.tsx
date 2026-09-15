@@ -4,12 +4,11 @@
  * Página inicial com categorias, mais vendidos, ofertas e depoimentos.
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
 import Badge from '../../components/common/Badge';
-import ProductGrid from '../../components/product/ProductGrid';
 import ProductCard from '../../components/product/ProductCard';
 import CategoryCard from '../../components/product/CategoryCard';
 import TestimonialCard from '../../components/common/TestimonialCard';
@@ -19,6 +18,8 @@ import { useCart } from '../../contexts/CartContext';
 import type { Product, Category } from '../../types/Product';
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
 
+const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));
+
 interface Testimonial {
   rating: number;
   comment: string;
@@ -26,11 +27,18 @@ interface Testimonial {
   productTitle?: string;
 }
 
+const ProductGridSkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {Array.from({ length: 8 }).map((_, i) => (
+      <div key={i} className="bg-white rounded-lg shadow-md h-96 animate-pulse" />
+    ))}
+  </div>
+);
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const useScroll = useHorizontalScroll({ scrollAmount: 400 });
-
+  const useScroll = useHorizontalScroll({ scrollAmount: 200 });
   // API State
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -222,13 +230,15 @@ const Home: React.FC = () => {
             </Typography>
           </div>
 
-          <ProductGrid
-            products={bestSellers}
-            loading={loadingBestSellers}
-            skeletonCount={12}
-            onAddToCart={handleAddToCart}
-            onProductClick={handleProductClick}
-          />
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <ProductGrid
+              products={bestSellers}
+              loading={loadingBestSellers}
+              skeletonCount={12}
+              onAddToCart={handleAddToCart}
+              onProductClick={handleProductClick}
+            />
+          </Suspense>
         </Container>
       </section>
 
