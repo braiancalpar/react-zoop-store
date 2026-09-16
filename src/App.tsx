@@ -1,11 +1,15 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CartProvider, useCart } from './contexts/CartContext';
 import MainLayout from './components/layout/MainLayout';
-import Home from './pages/Home/Home';
-import ComponentShowcase from './pages/ComponentShowcase';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
+import { lazy, Suspense } from 'react';
+// import PageLoader from './components/common/PageLoader';
+import PageSkeleton from './components/common/PageSkeleton';
+
+const Home = lazy(() => import('./pages/Home/Home'));
+const Products = lazy(() => import('./pages/Products/Products'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail/ProductDetail'));
+const Cart = lazy(() => import('./pages/Cart/Cart'));
+const ComponentShowcase = lazy(() => import('./pages/ComponentShowcase/ComponentShowcase'));
 
 function AppContent() {
   const navigate = useNavigate();
@@ -25,13 +29,16 @@ function AppContent() {
 
   return (
     <MainLayout cartItemCount={itemCount} onSearch={handleSearch} onCartClick={handleCartClick}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/components" element={<ComponentShowcase />} />
-      </Routes>
+      {/* <Suspense fallback={<PageLoader />}> */}
+      <Suspense fallback={<PageSkeleton />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/components" element={<ComponentShowcase />} />
+        </Routes>
+      </Suspense>
     </MainLayout>
   );
 }

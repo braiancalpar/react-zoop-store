@@ -20,6 +20,7 @@ import Rating from '../../common/Rating';
 import Button from '../../common/Button';
 import Badge from '../../common/Badge';
 import type { ProductCardProps } from './ProductCard.types';
+import OptimizedImage from '../../common/OptimizedImage';
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -69,11 +70,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-cinza-50">
-        <img
+        <OptimizedImage
           src={product.thumbnail}
           alt={product.title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          loading="lazy"
+          aspectRatio="square"
+          priority={false}
         />
 
         {/* Discount Badge */}
@@ -91,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Add to Cart Button Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Button
             variant="primary"
             size="sm"
@@ -112,7 +114,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Title */}
-        <h3 className="text-base font-medium text-grafite-900 line-clamp-2 min-h-[3rem]">
+        <h3 className="text-base font-medium text-grafite-900 line-clamp-2 min-h-12">
           {product.title}
         </h3>
 

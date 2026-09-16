@@ -14,7 +14,9 @@
     "server": "json-server --watch server/db.json --port 3001",
     "dev:full": "concurrently \"npm run dev\" \"npm run server\" --names \"vite,api\" --prefix-colors \"cyan,magenta\"",
     "generate:data": "node scripts/generateData.js",
-    "perf": "npm run build && npm run preview"
+    "perf": "npm run build && npm run preview",
+    "build:analyze": "set ANALYZE=true&& vite build",
+    "analyze": "open stats.html"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -39,7 +41,9 @@
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "puppeteer": "^24.31.0",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^4.1.17",
+    "terser": "^5.44.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"

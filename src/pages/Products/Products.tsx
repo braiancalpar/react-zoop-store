@@ -5,17 +5,18 @@
  * ordenação e paginação básica.
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
-import ProductGrid from '../../components/product/ProductGrid';
-import CategoryNav from '../../components/product/CategoryNav';
 import Button from '../../components/common/Button';
 import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
 import { useCart } from '../../contexts/CartContext';
 import type { Product, Category } from '../../types/Product';
+
+const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));
+const CategoryNav = lazy(() => import('../../components/product/CategoryNav/CategoryNav'));
 
 type SortOption = 'relevance' | 'price-asc' | 'price-desc' | 'rating';
 
@@ -217,13 +218,15 @@ const Products: React.FC = () => {
         ) : (
           <>
             {/* Category Navigation */}
-            <div className="mb-6">
+            <Suspense
+              fallback={<div className="mb-8 h-12 bg-cinza-100 rounded-lg animate-pulse" />}
+            >
               <CategoryNav
                 categories={categories}
                 activeCategory={activeCategory}
                 onCategoryClick={handleCategoryChange}
               />
-            </div>
+            </Suspense>
 
             {/* Filters and Sort Bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 p-4 bg-white rounded-lg border border-cinza-200">
@@ -287,11 +290,22 @@ const Products: React.FC = () => {
               </div>
             ) : (
               /* Products Grid */
-              <ProductGrid
-                products={paginatedProducts}
-                onAddToCart={handleAddToCart}
-                onProductClick={handleProductClick}
-              />
+              <Suspense
+                fallback={
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} className="bg-white rounded-lg shadow-md h-96 animate-pulse" />
+                    ))}
+                  </div>
+                }
+              >
+                <ProductGrid
+                  products={paginatedProducts}
+                  loading={isLoading}
+                  onProductClick={handleProductClick}
+                  onAddToCart={handleAddToCart}
+                />
+              </Suspense>
             )}
 
             {/* Pagination */}
