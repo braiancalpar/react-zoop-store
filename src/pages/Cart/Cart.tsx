@@ -11,11 +11,17 @@ import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
 import Button from '../../components/common/Button';
 import CartItem from '../../components/product/CartItem';
-import { useCart } from '../../contexts/CartContextAdapter';
+import { useCartStore } from '../../store/CartStore';
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const { items, itemCount, subtotal, discount, total, updateQuantity, removeFromCart } = useCart();
+  const items = useCartStore((state) => state.items);
+  const itemCount = useCartStore((state) => state.getItemCount());
+  const subtotal = useCartStore((state) => state.getSubtotal());
+  const discount = useCartStore((state) => state.getSubtotal());
+  const total = useCartStore((state) => state.getTotal());
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
 
   // Formata preço em BRL
   const formatPrice = (price: number) => {
