@@ -7,6 +7,7 @@
 import React, { useMemo } from 'react';
 import QuantitySelector from '../../common/QuantitySelector';
 import Typography from '../../common/Typography';
+import OptimizedImage from '../../common/OptimizedImage';
 
 export interface CartItemData {
   id: number;
@@ -51,9 +52,15 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove })
   return (
     <div className="flex gap-4 p-4 bg-white rounded-lg border border-cinza-200 hover:shadow-md transition-shadow duration-200">
       {/* Product Image */}
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <div className="w-24 h-24 rounded-lg overflow-hidden bg-cinza-50">
-          <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+          <OptimizedImage
+            src={item.thumbnail}
+            alt={item.title}
+            className="w-full h-full object-cover"
+            aspectRatio="square"
+            priority={true}
+          />
         </div>
       </div>
 
@@ -79,7 +86,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove })
           {/* Remove Button */}
           <button
             onClick={() => onRemove(item.id)}
-            className="flex-shrink-0 p-1.5 text-grafite-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="shrink-0 p-1.5 text-grafite-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
             aria-label="Remover item"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

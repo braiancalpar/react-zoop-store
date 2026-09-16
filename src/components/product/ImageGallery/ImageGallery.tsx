@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import OptimizedImage from '../../common/OptimizedImage';
 
 export interface ImageGalleryProps {
   images: string[];
@@ -39,10 +40,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, alt }) => {
     <div className="space-y-4">
       {/* Main Image */}
       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-cinza-50 border border-cinza-200">
-        <img
+        <OptimizedImage
           src={images[selectedIndex]}
           alt={`${alt} - imagem ${selectedIndex + 1}`}
           className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+          aspectRatio="square"
+          priority={selectedIndex === 0}
         />
 
         {/* Navigation Arrows (se houver múltiplas imagens) */}
@@ -122,10 +125,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, alt }) => {
               `}
               aria-label={`Selecionar imagem ${index + 1}`}
             >
-              <img
+              <OptimizedImage
                 src={image}
                 alt={`${alt} - thumbnail ${index + 1}`}
                 className="w-full h-full object-cover object-center"
+                aspectRatio="square"
               />
             </button>
           ))}
