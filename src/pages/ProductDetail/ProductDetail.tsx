@@ -14,15 +14,15 @@ import Rating from '../../components/common/Rating';
 import Badge from '../../components/common/Badge';
 import ProductPrice from '../../components/product/ProductPrice';
 import QuantitySelector from '../../components/common/QuantitySelector';
-import { useCart } from '../../contexts/CartContext';
 import { useProduct } from '../../hooks/useProduct';
+import { useCartStore } from '../../store/CartStore';
 
 const ImageGallery = lazy(() => import('../../components/product/ImageGallery/ImageGallery'));
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const [quantity, setQuantity] = useState(1);
   const { product, loading, error } = useProduct(id);

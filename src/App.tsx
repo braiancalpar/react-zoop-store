@@ -1,9 +1,10 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { CartProvider, useCart } from './contexts/CartContext';
+import { CartProvider } from './contexts/CartContextAdapter';
 import MainLayout from './components/layout/MainLayout';
 import { lazy, Suspense } from 'react';
 // import PageLoader from './components/common/PageLoader';
 import PageSkeleton from './components/common/PageSkeleton';
+import { useCartStore } from './store/CartStore';
 
 const Home = lazy(() => import('./pages/Home/Home'));
 const Products = lazy(() => import('./pages/Products/Products'));
@@ -13,7 +14,7 @@ const ComponentShowcase = lazy(() => import('./pages/ComponentShowcase/Component
 
 function AppContent() {
   const navigate = useNavigate();
-  const { itemCount } = useCart();
+  const itemCount = useCartStore((state) => state.getItemCount());
 
   const handleSearch = (query: string) => {
     if (query.trim()) {

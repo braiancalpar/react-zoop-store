@@ -12,8 +12,8 @@ import Typography from '../../components/common/Typography';
 import Button from '../../components/common/Button';
 import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
-import { useCart } from '../../contexts/CartContext';
 import type { Product, Category } from '../../types/Product';
+import { useCartStore } from '../../store/CartStore';
 
 const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));
 const CategoryNav = lazy(() => import('../../components/product/CategoryNav/CategoryNav'));
@@ -22,7 +22,7 @@ type SortOption = 'relevance' | 'price-asc' | 'price-desc' | 'rating';
 
 const Products: React.FC = () => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
   const [searchParams] = useSearchParams();
 
   // API State

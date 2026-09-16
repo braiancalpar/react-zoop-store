@@ -14,9 +14,9 @@ import CategoryCard from '../../components/product/CategoryCard';
 import TestimonialCard from '../../components/common/TestimonialCard';
 import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
-import { useCart } from '../../contexts/CartContext';
 import type { Product, Category } from '../../types/Product';
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
+import { useCartStore } from '../../store/CartStore';
 
 const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));
 
@@ -37,7 +37,7 @@ const ProductGridSkeleton = () => (
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
   const useScroll = useHorizontalScroll({ scrollAmount: 200 });
   // API State
   const [categories, setCategories] = useState<Category[]>([]);
