@@ -12,7 +12,7 @@ import Typography from '../../components/common/Typography';
 import Button from '../../components/common/Button';
 import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/CartContextAdapter';
 import type { Product, Category } from '../../types/Product';
 
 const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));

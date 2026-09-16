@@ -274,7 +274,7 @@ const ComponentShowcase: React.FC = () => {
           </Demo>
 
           <Demo label="Glassmorphism">
-            <div className="relative h-32 bg-gradient-to-r from-magenta-500 to-azul-500 rounded-lg overflow-hidden">
+            <div className="relative h-32 bg-linear-to-r from-magenta-500 to-azul-500 rounded-lg overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="glass p-6 rounded-lg">
                   <Typography color="text-white" weight="semibold">

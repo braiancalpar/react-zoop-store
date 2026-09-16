@@ -14,7 +14,7 @@ import CategoryCard from '../../components/product/CategoryCard';
 import TestimonialCard from '../../components/common/TestimonialCard';
 import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/CartContextAdapter';
 import type { Product, Category } from '../../types/Product';
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
 

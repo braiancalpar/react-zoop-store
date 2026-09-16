@@ -11,7 +11,7 @@ import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
 import Button from '../../components/common/Button';
 import CartItem from '../../components/product/CartItem';
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/CartContextAdapter';
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();

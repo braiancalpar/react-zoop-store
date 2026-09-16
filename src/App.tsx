@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { CartProvider, useCart } from './contexts/CartContext';
+import { CartProvider, useCart } from './contexts/CartContextAdapter';
 import MainLayout from './components/layout/MainLayout';
 import { lazy, Suspense } from 'react';
 // import PageLoader from './components/common/PageLoader';

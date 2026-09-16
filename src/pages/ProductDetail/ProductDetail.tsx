@@ -14,7 +14,7 @@ import Rating from '../../components/common/Rating';
 import Badge from '../../components/common/Badge';
 import ProductPrice from '../../components/product/ProductPrice';
 import QuantitySelector from '../../components/common/QuantitySelector';
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/CartContextAdapter';
 import { useProduct } from '../../hooks/useProduct';
 
 const ImageGallery = lazy(() => import('../../components/product/ImageGallery/ImageGallery'));
