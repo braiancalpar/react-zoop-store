@@ -2,7 +2,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CartProvider, useCart } from './contexts/CartContext';
 import MainLayout from './components/layout/MainLayout';
 import { lazy, Suspense } from 'react';
-import PageLoader from './components/common/PageLoader';
+// import PageLoader from './components/common/PageLoader';
+import PageSkeleton from './components/common/PageSkeleton';
 
 const Home = lazy(() => import('./pages/Home/Home'));
 const Products = lazy(() => import('./pages/Products/Products'));
@@ -28,7 +29,8 @@ function AppContent() {
 
   return (
     <MainLayout cartItemCount={itemCount} onSearch={handleSearch} onCartClick={handleCartClick}>
-      <Suspense fallback={<PageLoader />}>
+      {/* <Suspense fallback={<PageLoader />}> */}
+      <Suspense fallback={<PageSkeleton />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
