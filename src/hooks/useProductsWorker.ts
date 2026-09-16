@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import * as Comlink from 'comlink';
 import type { Product } from '../types/Product';
-import type { ProductsWorkerApi, SortOption } from '../workers/products.workers';
+import type { ProductsWorkerApi, SortOption } from '../workers/products.worker';
 
 export function useProductsWorker() {
   const workerRef = useRef<Worker | null>(null);
