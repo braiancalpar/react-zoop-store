@@ -5,7 +5,7 @@ import type { ProductsWorkerApi, SortOption } from '../workers/products.workers'
 
 export function useProductsWorker() {
   const workerRef = useRef<Worker | null>(null);
-  const apiRef = useRef<ProductsWorkerApi | null>(null);
+  const apiRef = useRef<Comlink.Remote<ProductsWorkerApi> | null>(null);
 
   const [paginatedProducts, setPaginatedProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(0);
