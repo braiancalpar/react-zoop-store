@@ -5,7 +5,7 @@
  * ordenação e paginação básica.
  */
 
-import React, { useState, useMemo, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Container from '../../components/layout/Container';
 import Typography from '../../components/common/Typography';
@@ -14,6 +14,7 @@ import Spinner from '../../components/common/Spinner';
 import { productsService } from '../../services/productsService';
 import type { Product, Category } from '../../types/Product';
 import { useCartStore } from '../../store/CartStore';
+import { useProductsWorker } from '../../hooks/useProductsWorker';
 
 const ProductGrid = lazy(() => import('../../components/product/ProductGrid/ProductGrid'));
 const CategoryNav = lazy(() => import('../../components/product/CategoryNav/CategoryNav'));
@@ -81,70 +82,21 @@ const Products: React.FC = () => {
     fetchData();
   }, [searchParams]);
 
-  // Filtrar por categoria e busca
-  const filteredProducts = useMemo(() => {
-    let filtered = products;
+  const { paginatedProducts, totalPages, totalProducts, isProcessing, filterProducts } =
+    useProductsWorker();
 
-    // Filtrar por categoria
-    if (activeCategory !== 'all') {
-      filtered = filtered.filter((p) => p.category === activeCategory);
+  useEffect(() => {
+    if (products.length > 0) {
+      filterProducts({
+        products,
+        category: activeCategory,
+        searchTerm,
+        sortBy,
+        currentPage,
+        itemsPerPage,
+      });
     }
-
-    // Filtrar por busca (título, descrição, marca)
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        (p) =>
-          p.title.toLowerCase().includes(searchLower) ||
-          p.description?.toLowerCase().includes(searchLower) ||
-          p.brand?.toLowerCase().includes(searchLower)
-      );
-    }
-
-    return filtered;
-  }, [activeCategory, products, searchTerm]);
-
-  // Ordenar produtos
-  const sortedProducts = useMemo(() => {
-    const products = [...filteredProducts];
-
-    switch (sortBy) {
-      case 'price-asc':
-        return products.sort((a, b) => {
-          const priceA = a.discountPercentage
-            ? a.price * (1 - a.discountPercentage / 100)
-            : a.price;
-          const priceB = b.discountPercentage
-            ? b.price * (1 - b.discountPercentage / 100)
-            : b.price;
-          return priceA - priceB;
-        });
-      case 'price-desc':
-        return products.sort((a, b) => {
-          const priceA = a.discountPercentage
-            ? a.price * (1 - a.discountPercentage / 100)
-            : a.price;
-          const priceB = b.discountPercentage
-            ? b.price * (1 - b.discountPercentage / 100)
-            : b.price;
-          return priceB - priceA;
-        });
-      case 'rating':
-        return products.sort((a, b) => b.rating - a.rating);
-      case 'relevance':
-      default:
-        return products;
-    }
-  }, [filteredProducts, sortBy]);
-
-  // Paginação
-  const paginatedProducts = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return sortedProducts.slice(startIndex, endIndex);
-  }, [sortedProducts, currentPage]);
-
-  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  }, [products, activeCategory, searchTerm, sortBy, currentPage, itemsPerPage, filterProducts]);
 
   const handleCategoryChange = (categorySlug: string) => {
     setActiveCategory(categorySlug);
@@ -206,12 +158,12 @@ const Products: React.FC = () => {
         )}
 
         {/* Loading State */}
-        {isLoading ? (
+        {isLoading || isProcessing ? (
           <div className="flex justify-center items-center py-16">
             <div className="flex flex-col items-center gap-4">
               <Spinner size="lg" color="primary" />
               <Typography variant="body" color="text-grafite-600">
-                Carregando produtos...
+                {isProcessing ? 'Processando produtos...' : 'Carregando produtos...'}
               </Typography>
             </div>
           </div>
@@ -232,8 +184,8 @@ const Products: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 p-4 bg-white rounded-lg border border-cinza-200">
               {/* Results count */}
               <Typography variant="body" color="text-grafite-700">
-                <span className="font-semibold">{sortedProducts.length}</span>{' '}
-                {sortedProducts.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
+                <span className="font-semibold">{totalProducts}</span>{' '}
+                {totalProducts === 1 ? 'produto encontrado' : 'produtos encontrados'}
               </Typography>
 
               {/* Sort dropdown */}
@@ -255,7 +207,7 @@ const Products: React.FC = () => {
             </div>
 
             {/* Empty State */}
-            {sortedProducts.length === 0 ? (
+            {totalProducts === 0 && !isProcessing && !isLoading ? (
               <div className="flex flex-col items-center justify-center py-16 px-4">
                 <div className="text-center max-w-md">
                   <div className="mb-6">
@@ -301,7 +253,7 @@ const Products: React.FC = () => {
               >
                 <ProductGrid
                   products={paginatedProducts}
-                  loading={isLoading}
+                  loading={isLoading || isProcessing}
                   onProductClick={handleProductClick}
                   onAddToCart={handleAddToCart}
                 />
